@@ -2,6 +2,7 @@ import re
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 
+
 class CleanData():
 
     def __init__(self):
