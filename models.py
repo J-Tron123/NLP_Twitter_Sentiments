@@ -14,9 +14,9 @@ class CleanData():
             u"\U0001F300-\U0001F5FF"  # symbols & pictographs
             u"\U0001F680-\U0001F6FF"  # transport & map symbols
             u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-            u"\U0001F900-\U0001F9FF"
+            u"\U0001F900-\U0001F9FF"  # supplemental symbols and pictographs
             u"\u2764"
-            u"\u2661"                 # supplemental symbols and pictographs
+            u"\u2661"                 
                                 "]+", flags = re.UNICODE)
         return regrex_pattern.sub(r"", text)
 
@@ -30,7 +30,7 @@ class CleanData():
     def clean_laughs(self, text):
         text = re.sub(r"(jaja*|jeje*)", "", text.lower()) # Remove laughs
 
-        text = re.sub(r"(xd*|xxxxxx*|ddddddd*)", "", text.lower()) # Remove xd characters
+        text = re.sub(r"(xd*|xxxxxx*|ddddddd*)", "", text.lower()) # Remove xd laughs
         
         return text
 
@@ -61,10 +61,14 @@ class CleanData():
         return punctuation_marks.sub("", tweet.lower())
 
 
-    def remove_mentions_hashtags(self, text): # Clean mentions in comments
+    def remove_mentions_hashtags_retweets(self, text): # Clean mentions in comments
 
-        text = re.sub(r"@*", "", text) # Remove mentions
+        text = re.sub(r"@[A-Za-z0-9]", "", text) # Remove mentions
+        text = re.sub(r"@[A-Za-zA-Z0-9]", "", text) # Remove mentions
+        text = re.sub(r"@[A-Za-z]", "", text) # Remove mentions
 
-        text = re.sub(r"#*", "", text) # Remove hashtags
+        text = re.sub(r"rt[\s   ]", "", text.lower()) # Remove retweets
+
+        text = re.sub(r"#", "", text) # Remove hashtags
 
         return text
